@@ -1,0 +1,11 @@
+# macOS system files that might appear in every folder
+.DS_Store
+
+# Ignore environment-specific files
+.env
+.env.local
+
+# Ignore logs and databases
+*.log
+*.sqlite
+*.db

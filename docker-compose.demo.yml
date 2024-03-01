@@ -1,0 +1,36 @@
+# This set up turn off some security feature that enable by default to optimize time docker container start.
+# Don't use this in production.
+version: "3"
+name: elk-minimal
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    container_name: elasticsearch
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.2
+    container_name: logstash
+    volumes:
+      - ./config/logstash.yml:/usr/share/logstash/config/logstash.yml
+    ports:
+      - "5001:5000" # my macs already use port 5000
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.2
+    container_name: kibana
+    ports:
+      - "5601:5601"
+
+#
+volumes:
+  esdata:
+    driver: local
